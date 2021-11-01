@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Toujours mieux que dire Bonjour !</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <h1>mieux que de dire Bonjour ?</h1>
+    <div id="input-container">
+      <input type="text" placeholder="être de Bozouls" />
+      <div id="underline"></div>
+      <div class="search icon"></div>
+    </div>
+    <div id="bottom">
+      <button id="check-button" disabled>
+        vérifier
+      </button>
+      <div id="result-container">
+        <div class="loader-container" style="display: none;">
+          <div class="loader"></div>
+        </div>
+        <p id="result" style="display: none;">Toujours !</p>
+      </div>
+    </div>
+    <script>
+      const query = document.querySelector.bind(document);
+      const button = query("#check-button");
+      const loader = query(".loader-container");
+      const result = query("#result");
+      const input = query("input");
+
+      input.focus();
+
+      const answers = [
+        "Toujours",
+        "Bien sûr",
+        "Oui",
+        "Evidemment",
+        "Mmmh... OUI"
+      ];
+
+      input.addEventListener("keyup", (e) => {
+        if (e.key === "Enter" && input.value.length) {
+          return button.dispatchEvent(new Event("click"));
+        }
+
+        button.disabled = !input.value.length;
+      });
+
+      button.addEventListener("click", () => {
+        button.disabled = true;
+        result.style.display = "none";
+        loader.style.display = "block";
+
+        const waintingTime = randomInt(0, 4000);
+        const answer =
+          input.value.toLowerCase() === "dire bonjour"
+            ? "<div class='glitch' data-text='Error 500: Logic exception !'>Error 500: Logic exception !</div>"
+            : `<div>${answers[randomInt(0, answers.length - 1)]} !</div>`;
+
+        setTimeout(() => {
+          result.innerHTML = answer;
+          result.style.display = "block";
+          button.disabled = false;
+          loader.style.display = "none";
+        }, waintingTime);
+      });
+
+      const randomInt = (min, max) =>
+        Math.floor(Math.random() * (max - min + 1) + min);
+    </script>
+  </body>
+</html>
